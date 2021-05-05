@@ -32,12 +32,12 @@ import com.cg.onlineinsurance.entity.PolicyDetails;
 import com.cg.onlineinsurance.exception.CustomerDetailsEmptyException;
 import com.cg.onlineinsurance.exception.CustomerNotFoundException;
 import com.cg.onlineinsurance.exception.CustomerPolicyListEmptyException;
-import com.cg.onlineinsurance.exception.CustomerPolicyNotFoundException;
 import com.cg.onlineinsurance.exception.DuplicateCustomerDetailException;
 import com.cg.onlineinsurance.exception.DuplicateCustomerException;
 import com.cg.onlineinsurance.exception.DuplicateCustomerPolicyException;
 import com.cg.onlineinsurance.exception.InvalidUserException;
 import com.cg.onlineinsurance.exception.PolicyActiveException;
+import com.cg.onlineinsurance.exception.PolicyDetailsNotFoundException;
 import com.cg.onlineinsurance.exception.PolicyListEmptyException;
 import com.cg.onlineinsurance.exception.PolicyNotFoundException;
 import com.cg.onlineinsurance.repository.ICustomerDetailsRepository;
@@ -117,7 +117,17 @@ public class CustomerController {
 	{
 		Policy policy=policyRepository.getPolicyById(policydetailsDTO.getPolicyId());
 		int id =policydetailsDTO.getPolicyDetailsId();
+		int policyId=policydetailsDTO.getPolicyId();
+		int customerId=policydetailsDTO.getCustomerId();
 		PolicyDetails policyDetails=policyDetailsRepository.findById(id).get();	
+		if(policyDetailRepository.getPolicyById(policyId)==null)
+		{
+			throw new PolicyNotFoundException();
+		}
+		if(policyDetailRepository.getCustomerById(policyId)==null)
+		{
+			throw new CustomerNotFoundException();
+		}
 		if(policyDetails.isStatus()) {
 			throw new PolicyActiveException();
 		}

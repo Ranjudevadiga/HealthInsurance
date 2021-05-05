@@ -28,6 +28,7 @@ import com.cg.onlineinsurance.exception.PolicyNotFoundException;
 
 import com.cg.onlineinsurance.exception.DuplicateCustomerDetailException;
 import com.cg.onlineinsurance.exception.PolicyActiveException;
+import com.cg.onlineinsurance.exception.PolicyDetailsNotFoundException;
 
 
 
@@ -101,6 +102,11 @@ public class ExceptionsHandler  {
 	@ExceptionHandler(value=CustomerDetailsEmptyException.class)
 	public ResponseEntity<Object> exception(CustomerDetailsEmptyException exception){
 		return new ResponseEntity<Object>("This customer has not entered his/her details.Kindly Enter the CustomerDetails before any policy can be purchased",HttpStatus.NOT_FOUND);
+		}
+	
+	@ExceptionHandler(value=PolicyDetailsNotFoundException.class)
+	public ResponseEntity<Object> exception(PolicyDetailsNotFoundException exception){
+		return new ResponseEntity<Object>("This Policy Details Id is not present ",HttpStatus.NOT_FOUND);
 		}
 }
 

@@ -25,27 +25,22 @@ public class CustomerDetails {
 	
 	@OneToOne(cascade = CascadeType.ALL)
 	@JoinColumn(name="customer_id")
-	
 	private Customer customer;
 	
 	@Column(name="is_diabetic")
 	@NotBlank(message="is Diabetic field cannot be empty")
-	
 	private String isDiabetic;
 	
 	@Column(name="is_smoker")
 	@NotBlank(message="is smoker field cannot be empty")
-
 	private String isSmoker;
 	
 	@Column(name="isAlcoholic")
 	@NotBlank(message="is alcoholic field cannot be empty")
-
 	private String isAlcoholic;
 	
 	@Column(name="bmi",nullable=false)
 	@Range(min = 1, message= "bmi may not be empty or null")
-	
 	private double bodyMassIndex;
 	
 	@Column(name="age")
@@ -137,10 +132,4 @@ public class CustomerDetails {
 		super();
 
 	}
-
-	
-
-	
-	
-	
 }

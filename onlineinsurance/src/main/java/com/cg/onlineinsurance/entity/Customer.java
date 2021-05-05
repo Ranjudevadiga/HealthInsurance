@@ -33,9 +33,7 @@ public class Customer {
 	
 	@Column(name="email_id")
 	@NotBlank(message="Email id cannot be empty")
-
 	@Pattern(regexp ="^[a-zA-Z]+@[a-zA-Z]+.[a-zA-Z]+$", message = "Please enter a valid email id format")
-	
 	private String emailId;
 	
 	@Column(name="password")
@@ -85,8 +83,6 @@ public class Customer {
 	public void setPassword(String password) {
 		this.password = password;
 	}
-
-	
 	public void setPolicyDetails(List<PolicyDetails> policyDetails) {
 		this.policyDetails = policyDetails;
 	}
@@ -97,15 +93,10 @@ public class Customer {
 		this.firstName = firstName;
 		this.lastName = lastName;
 		this.emailId = emailId;
-		this.password = password;
-		
+		this.password = password;	
 	}
 
 	public Customer() {
 		super();
 	}
-
-	
-
-	
 }

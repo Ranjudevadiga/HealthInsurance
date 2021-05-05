@@ -16,7 +16,6 @@ public interface IAdminService {
 	List<Policy> removePolicy(int id);
 	Policy updatePolicy(Policy policy);
 	List<Policy> viewAllPolicies();  
-	
 	Policy getPolicyById(int id);			
 	List<Customer> viewAllCustomer();
 	Customer getCustomerById(int code);

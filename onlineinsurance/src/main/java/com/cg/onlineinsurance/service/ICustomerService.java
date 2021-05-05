@@ -29,5 +29,5 @@ public interface  ICustomerService {
     List<PolicyDetails> getpolicyDetailsById(int id);
 	int validate(String emailId, String password);
 	double calculatePremium(int age, String isDiabetic, String isSmoker, String isAlcoholic, Policy policy);
-	int removeCustomerPolicy(int policyId, int customerId) throws PolicyNotFoundException;
+	int removeCustomerPolicy(int policyId, int customerId)
 }

@@ -20,14 +20,14 @@ public class PolicyDetails   {
 	@GeneratedValue(strategy = GenerationType.IDENTITY)
 	private int policyDetailsId;
 	
-	 @ManyToOne
-	 @JoinColumn(name="customer_id")
-	 private Customer  customer;
+	@ManyToOne
+	@JoinColumn(name="customer_id")
+	private Customer  customer;
 	   
 	 
-	 @ManyToOne
-	 @JoinColumn(name="policyId")
-	 private Policy  policy;
+	@ManyToOne
+	@JoinColumn(name="policyId")
+	private Policy  policy;
 	
 	
 	@Column(name="start_date")

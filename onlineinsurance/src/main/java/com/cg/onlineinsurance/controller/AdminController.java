@@ -43,7 +43,7 @@ public class AdminController {
 	ICustomerRepository customerRepository;
 
 	@PostMapping("/addPolicy")
-	public ResponseEntity<String> addPolicy(@Valid @RequestBody Policy policy){
+	public ResponseEntity<String> addPolicy(@Valid @RequestBody Policy policy) throws DuplicatePolicyException{
 		if(policy!=null)
 		{
 			String policyName=policy.getPolicyName();
@@ -55,71 +55,56 @@ public class AdminController {
 				}
 			}
 		}
-		
-		//if((error.hasFieldErrors("policyName")) || (error.hasFieldErrors("ageGroup")) || (error.hasFieldErrors("policyTerm"))|| (error.hasFieldErrors("baseAmount"))||(error.hasFieldErrors("policyCover")))
-			//return new ResponseEntity<String>("you must enter all fields",HttpStatus.OK);
-		
 		adminService.addPolicy(policy);
 		return new ResponseEntity<String>("Policy added", HttpStatus.OK);
-		
 	}
 
-
 	@PutMapping("/updatePolicy")
-	public ResponseEntity<String> updatePolicy(@Valid @RequestBody Policy policy)  {
+	public ResponseEntity<String> updatePolicy(@Valid @RequestBody Policy policy) throws PolicyNotFoundException{
 		if(!policyRepository.findById(policy.getPolicyId()).isPresent()) throw new PolicyNotFoundException();
-		
-		
-		
 		adminService.updatePolicy(policy);
 		return new ResponseEntity<>("Policy Updated", HttpStatus.OK);
 	}
 
 	@GetMapping("/selectAll")
-	public ResponseEntity<List<Policy>> displayPolicies()  {
+	public ResponseEntity<List<Policy>> displayPolicies() throws PolicyListEmptyException{
 		if(policyRepository.findAll().isEmpty())throw new PolicyListEmptyException();
 		List<Policy> policyList = adminService.viewAllPolicies();
-
 		return new ResponseEntity<>(policyList, HttpStatus.OK);
 	}
 
 	@DeleteMapping("/deletePolicy/{id}")
-	public ResponseEntity<String> deletePolicy(@PathVariable int id) {
+	public ResponseEntity<String> deletePolicy(@PathVariable int id) throws PolicyNotFoundException{
 		if(!policyRepository.findById(id).isPresent()) throw new PolicyNotFoundException();
 		adminService.removePolicy(id);
 		return new ResponseEntity<>("Successfully deleted", HttpStatus.OK);
 	}
 
 	@GetMapping("/getPolicyById/{code}")
-	public ResponseEntity <Policy> getPolicyById(@PathVariable int code) {
+	public ResponseEntity <Policy> getPolicyById(@PathVariable int code) throws PolicyNotFoundException{
 		if(!policyRepository.findById(code).isPresent()) 
 		{
 			throw new PolicyNotFoundException();
 		} 
 		Policy policy=adminService.getPolicyById(code);
-
 		return new ResponseEntity<>(policy, HttpStatus.OK);
 	}
 	
 	@GetMapping("/viewAllCustomer")
-	public ResponseEntity<List<Customer>> viewAllCustomer() throws CustomerNotFoundException {
+	public ResponseEntity<List<Customer>> viewAllCustomer() throws CustomerListEmptyException {
 		if(customerRepository.findAll().isEmpty())throw new CustomerListEmptyException();
 		List<Customer> policyList = adminService.viewAllCustomer();
-		
-
 		return new ResponseEntity<>(policyList, HttpStatus.OK);
 	}
 	
 	@GetMapping("/viewCustomerById/{code}")
-	public ResponseEntity <Customer> getCustomerById(@PathVariable int code) {
+	public ResponseEntity <Customer> getCustomerById(@PathVariable int code) throws CustomerNotFoundException{
 		if(customerRepository.getCustomerById(code)==null)
 	    {
 	    	throw new CustomerNotFoundException();
 	    }
 		Customer policy=adminService.getCustomerById(code);
-		 
-
 		return new ResponseEntity<>(policy, HttpStatus.OK);
-	}
 	
+	}
 }

@@ -74,7 +74,4 @@ public class CustomerDetailsDTO {
 		this.salaryBracket = salaryBracket;
 	}
 	
-	
-	
-	
 }

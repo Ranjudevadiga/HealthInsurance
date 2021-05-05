@@ -7,17 +7,11 @@ public class PolicyDetailsDTO {
 
 	
 	private int policyDetailsId;
-	
-	private int  customerId;
-	   
+	private int  customerId;   
 	private int policyId;
-
 	private LocalDate startDate;
-	
 	private LocalDate expiryDate;
-	
 	private double premiumAmounts;
-	
 	private boolean status;
 
 	public int getPolicyDetailsId() {
@@ -91,6 +85,4 @@ public class PolicyDetailsDTO {
 	public PolicyDetailsDTO() {
 		super();
 	}
-	
-	
 }

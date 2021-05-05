@@ -22,8 +22,6 @@ public class CustomerDTO {
 		this.password = password;
 	}
 	public CustomerDTO() {
-		super();
-		
+		super();	
 	}
-	
 }

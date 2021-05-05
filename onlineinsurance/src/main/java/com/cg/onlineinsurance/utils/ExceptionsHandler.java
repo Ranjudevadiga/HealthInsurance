@@ -34,7 +34,6 @@ import com.cg.onlineinsurance.exception.PolicyActiveException;
 @ControllerAdvice
 public class ExceptionsHandler  {
 	
-	
 	@ExceptionHandler(value=DuplicatePolicyException.class)
 	public ResponseEntity<Object> exception( DuplicatePolicyException exception){
 		return new ResponseEntity<Object>("Policy already exists",HttpStatus.NOT_FOUND);
@@ -103,8 +102,6 @@ public class ExceptionsHandler  {
 	public ResponseEntity<Object> exception(CustomerDetailsEmptyException exception){
 		return new ResponseEntity<Object>("This customer has not entered his/her details.Kindly Enter the CustomerDetails before any policy can be purchased",HttpStatus.NOT_FOUND);
 		}
-	
-	
 }
 
 

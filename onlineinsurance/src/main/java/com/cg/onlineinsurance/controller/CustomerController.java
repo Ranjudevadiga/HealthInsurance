@@ -71,7 +71,7 @@ public class CustomerController {
 	IPolicyDetailsRepository policyDetailRepository;
 	
 	@PostMapping("/registerCustomer")
-	public ResponseEntity<String> registerCustomer(@Valid @RequestBody Customer customer)
+	public ResponseEntity<String> registerCustomer(@Valid @RequestBody Customer customer)throws DuplicateCustomerException
 	{
 		for(Customer customerdetail:customerRepository.findAll())
 		{
@@ -80,18 +80,12 @@ public class CustomerController {
 				throw new DuplicateCustomerException();
 			}
 		}
-		//if((error.hasFieldErrors("firstName")) || (error.hasFieldErrors("lastName")) || (error.hasFieldErrors("emailId")|| (error.hasFieldErrors("password"))))
-			//return new ResponseEntity<String>("you must enter all fields",HttpStatus.OK);
-		
-		
 		customerService.registerCustomer(customer);
 		return new ResponseEntity<>("Successfully registered", HttpStatus.OK);
 	}
 	
 	@PostMapping("/addCustomerDetail")
-	
-	
-	public ResponseEntity<String> addCustomerDetail(@Valid @RequestBody CustomerDetailsDTO customerDetailsDTO)
+	public ResponseEntity<String> addCustomerDetail(@Valid @RequestBody CustomerDetailsDTO customerDetailsDTO)throws CustomerNotFoundException,DuplicateCustomerDetailException
 	{
 		if(!customerRepository.existsById(customerDetailsDTO.getCustomerId()))
 		{
@@ -105,48 +99,39 @@ public class CustomerController {
 				throw new DuplicateCustomerDetailException();
 			}
 		}
-		
-		//if((error.hasFieldErrors("isDiabetic")) || (error.hasFieldErrors("isSmoker")) || (error.hasFieldErrors("isAlcoholic"))|| (error.hasFieldErrors("bodyMassIndex"))||(error.hasFieldErrors("age"))||(error.hasFieldErrors("salaryBracket")))
-		//	return new ResponseEntity<String>("you must enter all fields",HttpStatus.OK);
-		
 		customerService.addCustomerDetails(customerDetailsDTO);
 		return new ResponseEntity<>("Successfully added customer details", HttpStatus.OK);
 	}
 	
 	
 	@GetMapping("/viewAllPolicies")
-	public ResponseEntity<List<Policy>> viewAll()
+	public ResponseEntity<List<Policy>> viewAll() throws PolicyListEmptyException
 	{   
 		if(policyRepository.findAll().isEmpty())throw new PolicyListEmptyException();
 		List<Policy> policyList= customerService.viewAllPolicies();
-	    return new ResponseEntity<>(policyList,HttpStatus.OK) ;
-	    
+	    return new ResponseEntity<>(policyList,HttpStatus.OK) ;   
 	}
 
 	@PutMapping("/renewPolicy")
-	public ResponseEntity<String> renewPolicy(@Valid @RequestBody PolicyDetailsDTO policydetailsDTO)
+	public ResponseEntity<String> renewPolicy(@Valid @RequestBody PolicyDetailsDTO policydetailsDTO)throws PolicyActiveException
 	{
 		Policy policy=policyRepository.getPolicyById(policydetailsDTO.getPolicyId());
 		int id =policydetailsDTO.getPolicyDetailsId();
-		PolicyDetails policyDetails=policyDetailsRepository.findById(id).get();
-		
-	if(policyDetails.isStatus()) {
-		throw new PolicyActiveException();
-	}
-	
+		PolicyDetails policyDetails=policyDetailsRepository.findById(id).get();	
+		if(policyDetails.isStatus()) {
+			throw new PolicyActiveException();
+		}
 		customerService.renewPolicy(policydetailsDTO);
-		 return new ResponseEntity<>("Policy renewed",HttpStatus.OK) ;
-		
+		return new ResponseEntity<>("Policy renewed",HttpStatus.OK) ;
 	}
 	
 	@PostMapping("/buyPolicy")
-	public ResponseEntity<String> buyPolicy(@RequestBody PolicyDetailsDTO policyDetailsDto,Errors error )
+	public ResponseEntity<String> buyPolicy(@RequestBody PolicyDetailsDTO policyDetailsDto,Errors error )throws CustomerDetailsEmptyException,DuplicateCustomerPolicyException,CustomerNotFoundException
 	{   
 		int custId=policyDetailsDto.getCustomerId();
 		 int policyId=policyDetailsDto.getPolicyId();
 		 CustomerDetails customerDetail=customerDetailsRepository.getDetailsByCustId(custId);
-		 List<PolicyDetails> policydetailList=policyDetailsRepository.findAll();
-		 
+		 List<PolicyDetails> policydetailList=policyDetailsRepository.findAll(); 
 		 if(customerDetail==null)
 		 {
 			 throw new CustomerDetailsEmptyException();
@@ -158,73 +143,58 @@ public class CustomerController {
 	    		throw new DuplicateCustomerPolicyException();
 	    	}
 		 }
-		 
 		 if( policyRepository.getPolicyById(policyId)==null)
 		 {
 	    		throw new PolicyNotFoundException();
-		 }
-			
+		 }	
 		 if( customerRepository.getCustomerById(custId)==null)
 		 {
 	    		throw new CustomerNotFoundException();
 		 }
-		 
 		customerService.buyPolicy(policyDetailsDto);
-	    
 	    return new ResponseEntity<>("policy bought",HttpStatus.OK) ;
-	    
 	}
 	
 	@DeleteMapping("/removePolicyDetails")
-	public ResponseEntity<String> removePolicyDetails(@RequestBody PolicyDetailsDTO policydetailsDTO)
-	{
-			
+	public ResponseEntity<String> removePolicyDetails(@RequestBody PolicyDetailsDTO policydetailsDTO)throws PolicyNotFoundException
+	{	
 	int flag=customerService.removeCustomerPolicy(policydetailsDTO.getCustomerId(),policydetailsDTO.getPolicyId());
 		if(flag==0) {
 			 throw new PolicyNotFoundException();	
 		}
 		return new ResponseEntity<>("policy successfully dropped",HttpStatus.OK) ;
-	
-
 	}
 	
 	
 	@GetMapping("/getPolicyById/{code}")
-	public ResponseEntity<Policy> viewCustomerPolicyById(@PathVariable int code) {
+	public ResponseEntity<Policy> viewCustomerPolicyById(@PathVariable int code)throws PolicyNotFoundException {
 		if(!policyRepository.findById(code).isPresent())
 		{
 			throw new PolicyNotFoundException();
 		}
-		
 		Policy policy=customerService.viewPolicyById(code);
-
 		return new ResponseEntity<>(policy, HttpStatus.OK);
 	}
 	
 	@GetMapping("/getAllPolicydetails/{id}")
-	public ResponseEntity<List<PolicyDetails>> getid(@PathVariable int id){
+	public ResponseEntity<List<PolicyDetails>> getid(@PathVariable int id)throws CustomerPolicyListEmptyException{
 		List<PolicyDetails> policyList= customerService.getpolicyDetailsById(id);
 		if(customerRepository.getCustomerById(id)==null) throw new CustomerNotFoundException();
 	     if(policyList.size()<=0)
 	     {
 	    	 throw new CustomerPolicyListEmptyException();
 	     }
-		
-	  
-	    return new ResponseEntity<>(policyList,HttpStatus.OK) ;
-	    
+	    return new ResponseEntity<>(policyList,HttpStatus.OK);
+	}
 	
-}
+	
 	@PostMapping("/validate")
-	public ResponseEntity<String> validate(@Valid @RequestBody Customer login,Errors error)
+	public ResponseEntity<String> validate(@Valid @RequestBody Customer login,Errors error)throws InvalidUserException
 	{
-		
 		int value=customerService.validate(login.getEmailId(),login.getPassword());
-		
 		if(value==0) {
 			throw new InvalidUserException();
 		}
 		return new ResponseEntity<String>("login successfull",HttpStatus.OK);
-		
 	}
 }

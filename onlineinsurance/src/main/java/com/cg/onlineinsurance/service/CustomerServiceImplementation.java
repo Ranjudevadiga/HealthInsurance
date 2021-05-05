@@ -139,7 +139,7 @@ public class CustomerServiceImplementation implements ICustomerService {
 	@Override
 public int removeCustomerPolicy(int customerId,int policyId)throws PolicyNotFoundException {
 		int flag=0;
-		PolicyDetails policyDetail=policyDetailsRepository.getpolicydetail(customerId, policyId);
+		PolicyDetails policyDetail=policyDetailsRepository.getPolicyDetail(customerId, policyId);
 		if(policyDetail!=null) {
 			
 		

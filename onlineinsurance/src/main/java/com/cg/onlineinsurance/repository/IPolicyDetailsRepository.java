@@ -23,5 +23,5 @@ public interface IPolicyDetailsRepository extends JpaRepository<PolicyDetails, I
 	public List<PolicyDetails> getPolicyDetailsById(int id);
 
 	@Query(value="from PolicyDetails policyDetails where policyDetails.customer.customerId=?1 and policyDetails.policy.policyId=?2")
-	public PolicyDetails getpolicydetail(int customerId,int policyId);
+	public PolicyDetails getPolicyDetail(int customerId,int policyId);
 }

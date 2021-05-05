@@ -28,7 +28,7 @@ public class AdminServiceImplementation implements IAdminService {
     ICustomerRepository customerRepository;
 	
     
-    // a provision for admin to add a new policy 
+    // a method for admin to add a new policy 
 	@Override
 	public String  addPolicy(Policy policy) {
         

@@ -132,10 +132,7 @@ public class CustomerController {
 		 int policyId=policyDetailsDto.getPolicyId();
 		 CustomerDetails customerDetail=customerDetailsRepository.getDetailsByCustId(custId);
 		 List<PolicyDetails> policydetailList=policyDetailsRepository.findAll(); 
-		 if(customerDetail==null)
-		 {
-			 throw new CustomerDetailsEmptyException();
-		 }
+		 
 		 for(PolicyDetails policydetail:policydetailList)
 		 {
 			 if(policydetail.getCustomer().getCustomerId()==custId && policydetail.getPolicy().getPolicyId()==policyId)
@@ -143,14 +140,19 @@ public class CustomerController {
 	    		throw new DuplicateCustomerPolicyException();
 	    	}
 		 }
-		 if( policyRepository.getPolicyById(policyId)==null)
-		 {
-	    		throw new PolicyNotFoundException();
-		 }	
 		 if( customerRepository.getCustomerById(custId)==null)
 		 {
 	    		throw new CustomerNotFoundException();
 		 }
+		 if(customerDetail==null)
+		 {
+			 throw new CustomerDetailsEmptyException();
+		 }
+		 if( policyRepository.getPolicyById(policyId)==null)
+		 {
+	    		throw new PolicyNotFoundException();
+		 }	
+		 
 		customerService.buyPolicy(policyDetailsDto);
 	    return new ResponseEntity<>("policy bought",HttpStatus.OK) ;
 	}

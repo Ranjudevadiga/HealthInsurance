@@ -5,6 +5,7 @@ import java.util.List;
 import javax.persistence.*;
 import javax.validation.constraints.NotBlank;
 import javax.validation.constraints.NotNull;
+import javax.validation.constraints.Size;
 
 import org.hibernate.validator.constraints.Range;
 
@@ -21,15 +22,17 @@ public class Policy {
 	
 	
 	@Column(name="policy_name")
-	@NotBlank(message="Policy name cannot be empty")
+	@NotBlank(message="Policy name should not be empty")
+	@Size(max=30,message="Policy Name should not be more than 30 characters")
 	private String policyName;
 	
 	@Column(name="age_group")
-	@Range(min = 1, message= "Age Group cannot be empty ")
+	@Range(min = 1, message= "Age Group should not empty ")
+	
 	private int ageGroup;
 	
 	@Column(name="policy_term")
-	@Range(min = 1, message= "Policy Term cannot be empty")
+	@Range(min = 1, message= "Policy Term should not be empty")
 	private int policyTerm;
 	
 	@Column(name="base_amount")

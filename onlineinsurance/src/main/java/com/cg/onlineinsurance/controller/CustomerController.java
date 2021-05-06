@@ -30,6 +30,8 @@ import com.cg.onlineinsurance.exception.CustomerPolicyListEmptyException;
 import com.cg.onlineinsurance.exception.DuplicateCustomerDetailException;
 import com.cg.onlineinsurance.exception.DuplicateCustomerException;
 import com.cg.onlineinsurance.exception.DuplicateCustomerPolicyException;
+import com.cg.onlineinsurance.exception.InvalidEmailIdException;
+import com.cg.onlineinsurance.exception.InvalidPasswordException;
 import com.cg.onlineinsurance.exception.InvalidUserException;
 import com.cg.onlineinsurance.exception.PolicyActiveException;
 import com.cg.onlineinsurance.exception.PolicyListEmptyException;
@@ -191,11 +193,32 @@ public class CustomerController {
 	}
 	
 	@PostMapping("/validate")
-	public ResponseEntity<String> validate(@Valid @RequestBody Customer login,Errors error)throws InvalidUserException
-	{
+	public ResponseEntity<String> validate(@RequestBody Customer login)throws InvalidUserException
+	{   
+		if(login.getEmailId()==null && login.getPassword()==null) 
+	   { 
+		return new ResponseEntity<String>("EmailId cannot be empty\nPassword cannot be empty",HttpStatus.OK);
+       }  
+		if(login.getEmailId()==null) 
+		{ 
+			return new ResponseEntity<String>("EmailId cannot be empty",HttpStatus.OK);
+        }
+        if(login.getPassword()==null) 
+        {
+        	return new ResponseEntity<String>("Password cannot be empty",HttpStatus.OK);
+        }
+		if(customerRepository.validate(login.getEmailId(),login.getPassword())==null && customerRepository.getCustomerByEmailId(login.getEmailId())==null)
+		{
+			throw new InvalidUserException();
+		}
+		if(customerRepository.getCustomerByEmailId(login.getEmailId())==null)
+		{
+			throw new InvalidEmailIdException();
+		}
+	   
 		int value=customerService.validate(login.getEmailId(),login.getPassword());
 		if(value==0) {
-			throw new InvalidUserException();
+			throw new InvalidPasswordException();
 		}
 		return new ResponseEntity<String>("login successfull",HttpStatus.OK);
 	}

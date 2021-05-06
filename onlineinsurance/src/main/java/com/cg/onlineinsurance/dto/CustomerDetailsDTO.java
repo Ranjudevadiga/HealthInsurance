@@ -1,14 +1,30 @@
 package com.cg.onlineinsurance.dto;
 
+import javax.validation.constraints.NotBlank;
+import javax.validation.constraints.Pattern;
+import javax.validation.constraints.Size;
+
+import org.hibernate.validator.constraints.Range;
+
 public class CustomerDetailsDTO {
 	
 	private int customerDetailId; 
 	private int customerId;
+	@NotBlank(message="Is Diabetic field cannot be empty")
+	@Pattern(regexp ="(yes)|(Yes)|(No)|(no)", message = "Please enter a yes or no")
 	private String isDiabetic;
+	@NotBlank(message="is smoker field cannot be empty")
+	@Pattern(regexp ="(yes)|(Yes)|(No)|(no)", message = "Please enter a yes or no")
 	private String isSmoker;
+	@Pattern(regexp ="(yes)|(Yes)|(No)|(no)", message = "Please enter a yes or no")
+	@NotBlank(message="Is alcoholic field cannot be empty")
 	private String isAlcoholic;
+	@Range(min = 1, message= "Body Mass Index cannot be null")
 	private double bodyMassIndex;
+	@Range(min = 1, message= "Age cannot be null")
+	
 	private int age;
+	@Range(min = 1, message= "salary bracket cannot be null")
 	private double salaryBracket;
 	public int getCustomerDetailId() {
 		return customerDetailId;

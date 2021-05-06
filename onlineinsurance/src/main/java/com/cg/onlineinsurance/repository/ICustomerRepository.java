@@ -14,4 +14,9 @@ public interface ICustomerRepository extends JpaRepository<Customer, Integer> {
 	
 	@Query(value="from Customer login where login.emailId=?1 and login.password=?2")
 	public Customer validate(String emailId,String password);
+
+	@Query(value = "from Customer cust where cust.emailId=?1")
+	public Customer getCustomerByEmailId(String emailId);
+
+	
 }

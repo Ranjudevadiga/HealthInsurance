@@ -22,6 +22,8 @@ import com.cg.onlineinsurance.exception.DuplicateCustomerException;
 import com.cg.onlineinsurance.exception.DuplicateCustomerPolicyException;
 import com.cg.onlineinsurance.exception.DuplicatePolicyException;
 import com.cg.onlineinsurance.exception.EmptyPolicyException;
+import com.cg.onlineinsurance.exception.InvalidEmailIdException;
+import com.cg.onlineinsurance.exception.InvalidPasswordException;
 import com.cg.onlineinsurance.exception.InvalidUserException;
 import com.cg.onlineinsurance.exception.PolicyListEmptyException;
 import com.cg.onlineinsurance.exception.PolicyNotFoundException;
@@ -58,6 +60,10 @@ public class ExceptionsHandler  {
 	@ExceptionHandler(value=CustomerNotFoundException.class)
 	public ResponseEntity<Object> exception(CustomerNotFoundException exception){
 		return new ResponseEntity<Object>("Could not find any registered customer by this credential",HttpStatus.NOT_FOUND);
+		}
+	@ExceptionHandler(value=InvalidEmailIdException.class)
+	public ResponseEntity<Object> exception(InvalidEmailIdException exception){
+		return new ResponseEntity<Object>("Email Id doesnot exist",HttpStatus.NOT_FOUND);
 		}
 	
 	@ExceptionHandler(value=DuplicateCustomerException.class)
@@ -96,9 +102,13 @@ public class ExceptionsHandler  {
 	
 	@ExceptionHandler(value=InvalidUserException.class)
 	public ResponseEntity<Object> exception(InvalidUserException exception){
-		return new ResponseEntity<Object>("Invalid user credentials",HttpStatus.NOT_FOUND);
+		return new ResponseEntity<Object>("Invalid login credentials",HttpStatus.NOT_FOUND);
 		}
 	
+	@ExceptionHandler(value=InvalidPasswordException.class)
+	public ResponseEntity<Object> exception(InvalidPasswordException exception){
+		return new ResponseEntity<Object>("Password is incorrect",HttpStatus.NOT_FOUND);
+		}
 	@ExceptionHandler(value=CustomerDetailsEmptyException.class)
 	public ResponseEntity<Object> exception(CustomerDetailsEmptyException exception){
 		return new ResponseEntity<Object>("This customer has not entered his/her details.Kindly Enter the CustomerDetails before any policy can be purchased",HttpStatus.NOT_FOUND);

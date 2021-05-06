@@ -1,5 +1,7 @@
 package com.cg.onlineinsurance;
 
+import static org.junit.Assert.assertEquals;
+
 import java.util.ArrayList;
 import java.util.List;
 
@@ -16,6 +18,7 @@ import org.mockito.junit.MockitoJUnitRunner;
 
 import com.cg.onlineinsurance.entity.Customer;
 import com.cg.onlineinsurance.entity.Policy;
+import com.cg.onlineinsurance.exception.PolicyNotFoundException;
 import com.cg.onlineinsurance.repository.ICustomerDetailsRepository;
 import com.cg.onlineinsurance.repository.ICustomerRepository;
 import com.cg.onlineinsurance.repository.IPolicyDetailsRepository;
@@ -72,6 +75,16 @@ class CustomerServiceTest {
 	
 	}
 	
-
+	@Test
+	public void testviewPolicyById() throws PolicyNotFoundException {
+		Mockito.when(policyRepository.getPolicyById(1)).thenReturn(new Policy(1,"Policy-type0000", 30, 2,3000,200000));
+		Policy pol=customerService.viewPolicyById(1);
+		assertEquals("Policy-type0000",pol.getPolicyName());
+		assertEquals(30,pol.getAgeGroup());
+		assertEquals(2,pol.getPolicyTerm());
+		assertEquals(3000,pol.getBaseAmount(),0.001);
+		assertEquals(200000,pol.getPolicyCover(),0.001);
+		Mockito.verify(policyRepository, Mockito.times(1)).getPolicyById(1);
+	    }
 	
 }

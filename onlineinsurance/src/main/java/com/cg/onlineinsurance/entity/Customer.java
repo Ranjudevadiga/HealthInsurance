@@ -25,19 +25,23 @@ public class Customer {
 	
 	@Column(name="first_name")
 	@NotBlank(message="First name cannot be empty")
+	@Size(max=30,message="First name should not be more than 30 characters")
 	private String firstName;
 	
 	@Column(name="last_name")
 	@NotBlank(message="Last name cannot be empty")
+	@Size(max=30,message="Last name should not be than 30 characters")
 	private String lastName;
 	
 	@Column(name="email_id")
 	@NotBlank(message="Email id cannot be empty")
-	@Pattern(regexp ="^[a-zA-Z]+@[a-zA-Z]+.[a-zA-Z]+$", message = "Please enter a valid email id format")
+	@Size(max=30,message="Email Id should not be more than 30 characters")
+	@Pattern(regexp ="^[a-zA-Z1-9]+@[a-zA-Z]+.[a-zA-Z]+$", message = "Please enter a valid email id format")
 	private String emailId;
 	
 	@Column(name="password")
     @Size(min=6,max=12,message="password size must lie within 6 and 12")
+	
 	@NotBlank(message="password cannot be empty")
 	private String password;
 	

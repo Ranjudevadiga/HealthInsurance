@@ -28,27 +28,21 @@ public class CustomerDetails {
 	private Customer customer;
 	
 	@Column(name="is_diabetic")
-	@NotBlank(message="is Diabetic field cannot be empty")
 	private String isDiabetic;
 	
 	@Column(name="is_smoker")
-	@NotBlank(message="is smoker field cannot be empty")
 	private String isSmoker;
 	
 	@Column(name="isAlcoholic")
-	@NotBlank(message="is alcoholic field cannot be empty")
 	private String isAlcoholic;
 	
-	@Column(name="bmi",nullable=false)
-	@Range(min = 1, message= "bmi may not be empty or null")
+	@Column(name="bmi")
 	private double bodyMassIndex;
 	
 	@Column(name="age")
-	@Range(min = 1, message= "age may not be empty or null")
 	private int age;
 	
 	@Column(name="salary_bracket")
-	@Range(min = 1, message= "salary bracket may not be empty or null")
 	private double salaryBracket;
 
 	public CustomerDetails(int customerDetailId, Customer customer, String isDiabetic, String isSmoker,

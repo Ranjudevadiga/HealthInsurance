@@ -48,14 +48,13 @@ class CustomerServiceTest {
 	@Test
     void testviewAllPolicies() {
 		List<Policy> policyList = new ArrayList<Policy>();
-		policyList.add(new Policy(1,"Health Companionupdated",3000,600000,45,2));
-		policyList.add(new Policy(2,"Jeevan Suraksha",4000,800000,55,3));
-		policyList.add(new Policy(3,"jeevan",1000,30000,55,1));
-		
+		policyList.add(new Policy(1,"Policy-type8080",4000,100000,25,3));
+		policyList.add(new Policy(2,"Policy-type0000",3000,200000,20,2));
+		policyList.add(new Policy(3,"Policy-type1245",9000,400000,45,1));
 		Mockito.when(policyRepository.findAll()).thenReturn(policyList);
 		List<Policy> list =customerService.viewAllPolicies();
 		Assertions.assertEquals(3, list.size()); 
-		Mockito.verify(policyRepository,Mockito.times(2)).findAll();
+		Mockito.verify(policyRepository,Mockito.times(1)).findAll();
 	}
 
 	@Test
@@ -68,9 +67,6 @@ class CustomerServiceTest {
 		customer.setEmailId("dishaBhat@gmail.com");
 		customer.setPassword("abcd");
 		customerService.registerCustomer(customer);
-		
-	    // customerRepository.save(customer);
-		
 		Assert.assertNotNull(customer.getCustomerId()); 
 		Mockito.verify(customerRepository, Mockito.times(1)).save(customer);
 	

@@ -60,12 +60,15 @@ public class AdminServicesTest {
 		Mockito.verify(policyRepository,Mockito.times(1)).save(policy);
 	}
 	
-	//@Test(expected = PolicyNotFoundException.class)
-	public void testRemovePolicy() {
+	@Test//(expected = PolicyNotFoundException.class)
+	public void testRemovePolicy()throws PolicyNotFoundException {
+	
 		Policy policy=new Policy();
-		adminService.removePolicy(1);
+		adminService.removePolicy(2);
 		Assertions.assertNotNull(policy.getPolicyId());
-		Mockito.verify(policyRepository, Mockito.times(1)).deleteById(1);
+		Mockito.verify(policyRepository, Mockito.times(1)).deleteById(2);
+		
+		
 	}
 	
 	
@@ -84,27 +87,37 @@ public class AdminServicesTest {
 		
 	}
 	
-	@Test(expected = CustomerNotFoundException.class)
-	public void testGetCustomerById() {
-		Customer customer=adminService.getCustomerById(1);
-		Assertions.assertNotNull(customer);
-		Mockito.verify(customerRepository, Mockito.times(1)).getCustomerById(1);
-	}
 	
 	@Test
 	public void testviewAllCustomer()
 	{
 		List<Customer> customerList=new ArrayList<Customer>();
-		customerList.add(new Customer(1,"ranjith@123","ranjith","kumar","r123"));
-		customerList.add(new Customer(2,"rao@123","rao ajith","kumar","rao123"));
+		customerList.add(new Customer(1,"ranjith","kumar","ranjith@123","r123"));
+		customerList.add(new Customer(2,"rao ajith","kumar","rao@123","rao123"));
 		
 		Mockito.when(customerRepository.findAll()).thenReturn(customerList);
 		List<Customer> cust=adminService.viewAllCustomer();
 		assertEquals(2,cust.size());
 		Mockito.verify(customerRepository,Mockito.times(1)).findAll();
 	}
+
+	@Test//(expected = CustomerNotFoundException.class)
+	public void testGetCustomerById()throws CustomerNotFoundException {
+		
+		Mockito.when(customerRepository.getCustomerById(1)).thenReturn(new Customer(1,"pooja","naik","tina@gmail.com","pmdhfe"));
+		Customer cus=adminService.getCustomerById(1);
+		System.out.println(cus.getLastName());
+		assertEquals("tina@gmail.com",cus.getEmailId());
+		assertEquals("pooja",cus.getFirstName());
+		assertEquals("naik",cus.getLastName());
+		
+		assertEquals("pmdhfe",cus.getPassword());
+		
+		Mockito.verify(customerRepository, Mockito.times(1)).getCustomerById(1);
+		
+	}
 	
-	@Test(expected = PolicyNotFoundException.class)
+	@Test//(expected = PolicyNotFoundException.class)
 	public void testGetPolicyById() {
 		Mockito.when(policyRepository.getPolicyById(1)).thenReturn(new Policy(1,"Policy-type0000", 30, 2,3000,200000));
 		Policy pol=adminService.getPolicyById(1);

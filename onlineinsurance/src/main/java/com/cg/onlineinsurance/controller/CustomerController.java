@@ -2,16 +2,12 @@ package com.cg.onlineinsurance.controller;
 
 import java.util.List;
 
-import javax.naming.spi.DirStateFactory.Result;
 import javax.validation.Valid;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
-import org.springframework.http.MediaType;
 import org.springframework.http.ResponseEntity;
-import org.springframework.validation.BindingResult;
 import org.springframework.validation.Errors;
-import org.springframework.validation.FieldError;
 import org.springframework.validation.annotation.Validated;
 import org.springframework.web.bind.annotation.DeleteMapping;
 import org.springframework.web.bind.annotation.GetMapping;
@@ -22,7 +18,6 @@ import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 
-import com.cg.onlineinsurance.dto.CustomerDTO;
 import com.cg.onlineinsurance.dto.CustomerDetailsDTO;
 import com.cg.onlineinsurance.dto.PolicyDetailsDTO;
 import com.cg.onlineinsurance.entity.Customer;
@@ -37,7 +32,6 @@ import com.cg.onlineinsurance.exception.DuplicateCustomerException;
 import com.cg.onlineinsurance.exception.DuplicateCustomerPolicyException;
 import com.cg.onlineinsurance.exception.InvalidUserException;
 import com.cg.onlineinsurance.exception.PolicyActiveException;
-import com.cg.onlineinsurance.exception.PolicyDetailsNotFoundException;
 import com.cg.onlineinsurance.exception.PolicyListEmptyException;
 import com.cg.onlineinsurance.exception.PolicyNotFoundException;
 import com.cg.onlineinsurance.repository.ICustomerDetailsRepository;
@@ -45,7 +39,6 @@ import com.cg.onlineinsurance.repository.ICustomerRepository;
 import com.cg.onlineinsurance.repository.IPolicyDetailsRepository;
 import com.cg.onlineinsurance.repository.IPolicyRepository;
 import com.cg.onlineinsurance.service.ICustomerService;
-
 
 @RestController
 @RequestMapping("/customer")
@@ -91,7 +84,6 @@ public class CustomerController {
 		{
 			throw new CustomerNotFoundException();
 		}
-		
 		for(CustomerDetails customerDetail: customerDetailsRepository.findAll())
 		{
 			if(customerDetail.getCustomer().getCustomerId()==customerDetailsDTO.getCustomerId())
@@ -124,7 +116,7 @@ public class CustomerController {
 		{
 			throw new PolicyNotFoundException();
 		}
-		if(policyDetailRepository.getCustomerById(policyId)==null)
+		if(policyDetailRepository.getCustomerById(customerId)==null)
 		{
 			throw new CustomerNotFoundException();
 		}
@@ -162,7 +154,6 @@ public class CustomerController {
 		 {
 	    		throw new PolicyNotFoundException();
 		 }	
-		 
 		customerService.buyPolicy(policyDetailsDto);
 	    return new ResponseEntity<>("policy bought",HttpStatus.OK) ;
 	}
@@ -198,7 +189,6 @@ public class CustomerController {
 	     }
 	    return new ResponseEntity<>(policyList,HttpStatus.OK);
 	}
-	
 	
 	@PostMapping("/validate")
 	public ResponseEntity<String> validate(@Valid @RequestBody Customer login,Errors error)throws InvalidUserException

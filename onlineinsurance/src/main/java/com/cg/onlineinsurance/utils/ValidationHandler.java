@@ -21,7 +21,7 @@ public class ValidationHandler extends ResponseEntityExceptionHandler {
 			String message=error.getDefaultMessage();
 			errors.put(fieldName,message);
 		});
-		//return super.handleMethodArgumentNotValid(e,headers,status, request);
-	return new ResponseEntity<Object>(errors,HttpStatus.BAD_REQUEST);
+		
+	return new ResponseEntity<>(errors,HttpStatus.BAD_REQUEST);
 	}
 }

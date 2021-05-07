@@ -109,7 +109,7 @@ public class CustomerController {
 	@PutMapping("/renewPolicy")
 	public ResponseEntity<String> renewPolicy(@Valid @RequestBody PolicyDetailsDTO policydetailsDTO)throws PolicyActiveException
 	{
-		Policy policy=policyRepository.getPolicyById(policydetailsDTO.getPolicyId());
+		
 		int id =policydetailsDTO.getPolicyDetailsId();
 		int policyId=policydetailsDTO.getPolicyId();
 		int customerId=policydetailsDTO.getCustomerId();
@@ -185,10 +185,8 @@ public class CustomerController {
 	public ResponseEntity<List<PolicyDetails>> getid(@PathVariable int id)throws CustomerPolicyListEmptyException{
 		List<PolicyDetails> policyList= customerService.getpolicyDetailsById(id);
 		if(customerRepository.getCustomerById(id)==null) throw new CustomerNotFoundException();
-	     if(policyList.size()<=0)
-	     {
-	    	 throw new CustomerPolicyListEmptyException();
-	     }
+	    if(policyList.size()<=0) throw new CustomerPolicyListEmptyException();
+	     
 	    return new ResponseEntity<>(policyList,HttpStatus.OK);
 	}
 	
@@ -197,15 +195,15 @@ public class CustomerController {
 	{   
 		if(login.getEmailId()==null && login.getPassword()==null) 
 	   { 
-		return new ResponseEntity<String>("EmailId cannot be empty\nPassword cannot be empty",HttpStatus.OK);
+		return new ResponseEntity<>("EmailId cannot be empty\nPassword cannot be empty",HttpStatus.OK);
        }  
 		if(login.getEmailId()==null) 
 		{ 
-			return new ResponseEntity<String>("EmailId cannot be empty",HttpStatus.OK);
+			return new ResponseEntity<>("EmailId cannot be empty",HttpStatus.OK);
         }
         if(login.getPassword()==null) 
         {
-        	return new ResponseEntity<String>("Password cannot be empty",HttpStatus.OK);
+        	return new ResponseEntity<>("Password cannot be empty",HttpStatus.OK);
         }
 		if(customerRepository.validate(login.getEmailId(),login.getPassword())==null && customerRepository.getCustomerByEmailId(login.getEmailId())==null)
 		{
@@ -220,6 +218,6 @@ public class CustomerController {
 		if(value==0) {
 			throw new InvalidPasswordException();
 		}
-		return new ResponseEntity<String>("login successfull",HttpStatus.OK);
+		return new ResponseEntity<>("login successfull",HttpStatus.OK);
 	}
 }

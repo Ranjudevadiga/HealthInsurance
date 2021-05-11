@@ -92,8 +92,8 @@ public class AdminServicesTest {
 	public void testviewAllCustomer()
 	{
 		List<Customer> customerList=new ArrayList<Customer>();
-		customerList.add(new Customer(1,"ranjith","kumar","ranjith@123","r123"));
-		customerList.add(new Customer(2,"rao ajith","kumar","rao@123","rao123"));
+		customerList.add(new Customer(1,"ranjith","kumar","ranjith@123","r123","admin"));
+		customerList.add(new Customer(2,"rao ajith","kumar","rao@123","rao123","user"));
 		
 		Mockito.when(customerRepository.findAll()).thenReturn(customerList);
 		List<Customer> cust=adminService.viewAllCustomer();
@@ -104,7 +104,7 @@ public class AdminServicesTest {
 	@Test//(expected = CustomerNotFoundException.class)
 	public void testGetCustomerById()throws CustomerNotFoundException {
 		
-		Mockito.when(customerRepository.getCustomerById(1)).thenReturn(new Customer(1,"pooja","naik","tina@gmail.com","pmdhfe"));
+		Mockito.when(customerRepository.getCustomerById(1)).thenReturn(new Customer(1,"pooja","naik","tina@gmail.com","pmdhfe","admin"));
 		Customer cus=adminService.getCustomerById(1);
 		System.out.println(cus.getLastName());
 		assertEquals("tina@gmail.com",cus.getEmailId());
@@ -112,7 +112,7 @@ public class AdminServicesTest {
 		assertEquals("naik",cus.getLastName());
 		
 		assertEquals("pmdhfe",cus.getPassword());
-		
+		assertEquals("admin",cus.getRole());
 		Mockito.verify(customerRepository, Mockito.times(1)).getCustomerById(1);
 		
 	}

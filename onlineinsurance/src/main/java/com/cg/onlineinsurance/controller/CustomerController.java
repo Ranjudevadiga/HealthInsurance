@@ -42,10 +42,10 @@ import com.cg.onlineinsurance.repository.ICustomerRepository;
 import com.cg.onlineinsurance.repository.IPolicyDetailsRepository;
 import com.cg.onlineinsurance.repository.IPolicyRepository;
 import com.cg.onlineinsurance.service.ICustomerService;
-@CrossOrigin(origins = "http://localhost:3002")
+@CrossOrigin(origins = "http://localhost:3001")
 @RestController
 @RequestMapping("/customer")
-@Validated
+//@Validated
 public class CustomerController {
 
 	@Autowired 
@@ -67,7 +67,7 @@ public class CustomerController {
 	IPolicyDetailsRepository policyDetailRepository;
 	
 	@PostMapping("/registerCustomer")
-	public ResponseEntity<String> registerCustomer(@Valid @RequestBody Customer customer)throws DuplicateCustomerException
+	public ResponseEntity<Integer> registerCustomer(@Valid @RequestBody Customer customer)throws DuplicateCustomerException
 	{
 		for(Customer customerdetail:customerRepository.findAll())
 		{
@@ -76,14 +76,15 @@ public class CustomerController {
 				throw new DuplicateCustomerException();
 			}
 		}
-		customerService.registerCustomer(customer);
-		return new ResponseEntity<>("Successfully registered", HttpStatus.OK);
+	
+		Customer cust=customerService.registerCustomer(customer);
+		return new ResponseEntity<>(cust.getCustomerId(), HttpStatus.OK);
 	}
 	
 	@PostMapping("/addCustomerDetail")
-	public ResponseEntity<String> addCustomerDetail(@Valid @RequestBody CustomerDetailsDTO customerDetailsDTO)throws CustomerNotFoundException,DuplicateCustomerDetailException
+	public ResponseEntity<String> addCustomerDetail(@RequestBody CustomerDetailsDTO customerDetailsDTO)throws CustomerNotFoundException,DuplicateCustomerDetailException
 	{
-		if(!customerRepository.existsById(customerDetailsDTO.getCustomerId()))
+		/*if(!customerRepository.existsById(customerDetailsDTO.getCustomerId()))
 		{
 			throw new CustomerNotFoundException();
 		}
@@ -93,7 +94,7 @@ public class CustomerController {
 			{
 				throw new DuplicateCustomerDetailException();
 			}
-		}
+		}*/
 		customerService.addCustomerDetails(customerDetailsDTO);
 		return new ResponseEntity<>("Successfully added customer details", HttpStatus.OK);
 	}

@@ -9,6 +9,7 @@ import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.validation.Errors;
 import org.springframework.validation.annotation.Validated;
+import org.springframework.web.bind.annotation.CrossOrigin;
 import org.springframework.web.bind.annotation.DeleteMapping;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PathVariable;
@@ -41,7 +42,7 @@ import com.cg.onlineinsurance.repository.ICustomerRepository;
 import com.cg.onlineinsurance.repository.IPolicyDetailsRepository;
 import com.cg.onlineinsurance.repository.IPolicyRepository;
 import com.cg.onlineinsurance.service.ICustomerService;
-
+@CrossOrigin(origins = "http://localhost:3000")
 @RestController
 @RequestMapping("/customer")
 @Validated
@@ -191,9 +192,9 @@ public class CustomerController {
 	}
 	
 	@PostMapping("/validate")
-	public ResponseEntity<String> validate(@RequestBody Customer login)throws InvalidUserException
+	public ResponseEntity<Customer> validate(@RequestBody Customer login)throws InvalidUserException
 	{   
-		if(login.getEmailId()==null && login.getPassword()==null) 
+		/*if(login.getEmailId()==null && login.getPassword()==null) 
 	   { 
 		return new ResponseEntity<>("EmailId cannot be empty\nPassword cannot be empty",HttpStatus.OK);
        }  
@@ -212,12 +213,14 @@ public class CustomerController {
 		if(customerRepository.getCustomerByEmailId(login.getEmailId())==null)
 		{
 			throw new InvalidEmailIdException();
-		}
+		}*/
 	   
-		int value=customerService.validate(login.getEmailId(),login.getPassword());
-		if(value==0) {
+		Customer customer=customerService.validate(login.getEmailId(),login.getPassword());
+		/*if(value==0) {
 			throw new InvalidPasswordException();
-		}
-		return new ResponseEntity<>("login successfull",HttpStatus.OK);
+			xwjxb
+		}*/
+		System.out.println("hello");
+		return new ResponseEntity<Customer>(customer,HttpStatus.OK);
 	}
 }

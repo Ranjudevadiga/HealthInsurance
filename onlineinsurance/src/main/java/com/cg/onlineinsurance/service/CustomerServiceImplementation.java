@@ -113,8 +113,6 @@ public class CustomerServiceImplementation implements ICustomerService {
 			int flag=0;
 			PolicyDetails policyDetail=policyDetailsRepository.getPolicyDetail(customerId, policyId);
 			if(policyDetail!=null) {
-				
-			
 			int id=policyDetail.getPolicyDetailsId();
 			policyDetailsRepository.deleteById(id);
 			flag=1;
@@ -243,17 +241,16 @@ public class CustomerServiceImplementation implements ICustomerService {
 	}
 
 	@Override
-	public int validate(String emailId, String password) {
+	public Customer validate(String emailId, String password) {
 		int flag=1;
 		Customer login=customerRepository.validate(emailId,password);
-		if(login==null) {
+		/*if(login==null) {
 			flag=0;
 			return flag;
-		}
-		return flag;
+		}*/
+		return login;
 	}
 }
-
 
 	
 

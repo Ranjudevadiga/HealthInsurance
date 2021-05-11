@@ -42,7 +42,7 @@ import com.cg.onlineinsurance.repository.ICustomerRepository;
 import com.cg.onlineinsurance.repository.IPolicyDetailsRepository;
 import com.cg.onlineinsurance.repository.IPolicyRepository;
 import com.cg.onlineinsurance.service.ICustomerService;
-@CrossOrigin(origins = "http://localhost:3000")
+@CrossOrigin(origins = "http://localhost:3002")
 @RestController
 @RequestMapping("/customer")
 @Validated

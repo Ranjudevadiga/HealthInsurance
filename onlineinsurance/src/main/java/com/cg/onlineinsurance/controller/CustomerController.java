@@ -42,7 +42,7 @@ import com.cg.onlineinsurance.repository.ICustomerRepository;
 import com.cg.onlineinsurance.repository.IPolicyDetailsRepository;
 import com.cg.onlineinsurance.repository.IPolicyRepository;
 import com.cg.onlineinsurance.service.ICustomerService;
-@CrossOrigin(origins = "http://localhost:3001")
+@CrossOrigin(origins = "http://localhost:3000")
 @RestController
 @RequestMapping("/customer")
 //@Validated
@@ -67,7 +67,7 @@ public class CustomerController {
 	IPolicyDetailsRepository policyDetailRepository;
 	
 	@PostMapping("/registerCustomer")
-	public ResponseEntity<Integer> registerCustomer(@Valid @RequestBody Customer customer)throws DuplicateCustomerException
+	public ResponseEntity<Integer> registerCustomer(@RequestBody Customer customer)throws DuplicateCustomerException
 	{
 		for(Customer customerdetail:customerRepository.findAll())
 		{
@@ -109,7 +109,7 @@ public class CustomerController {
 	}
 
 	@PutMapping("/renewPolicy")
-	public ResponseEntity<String> renewPolicy(@Valid @RequestBody PolicyDetailsDTO policydetailsDTO)throws PolicyActiveException
+	public ResponseEntity<PolicyDetailsDTO> renewPolicy(@RequestBody PolicyDetailsDTO policydetailsDTO)throws PolicyActiveException
 	{
 		
 		int id =policydetailsDTO.getPolicyDetailsId();
@@ -124,15 +124,15 @@ public class CustomerController {
 		{
 			throw new CustomerNotFoundException();
 		}
-		if(policyDetails.isStatus()) {
-			throw new PolicyActiveException();
-		}
+		//if(policyDetails.isStatus()) {
+		//	throw new PolicyActiveException();
+		//}
 		customerService.renewPolicy(policydetailsDTO);
-		return new ResponseEntity<>("Policy renewed",HttpStatus.OK) ;
+		return new ResponseEntity<>(policydetailsDTO,HttpStatus.OK) ;
 	}
 	
 	@PostMapping("/buyPolicy")
-	public ResponseEntity<String> buyPolicy(@RequestBody PolicyDetailsDTO policyDetailsDto,Errors error )throws CustomerDetailsEmptyException,DuplicateCustomerPolicyException,CustomerNotFoundException
+	public ResponseEntity<PolicyDetailsDTO> buyPolicy(@RequestBody PolicyDetailsDTO policyDetailsDto,Errors error )throws CustomerDetailsEmptyException,DuplicateCustomerPolicyException,CustomerNotFoundException
 	{   
 		int custId=policyDetailsDto.getCustomerId();
 		 int policyId=policyDetailsDto.getPolicyId();
@@ -159,7 +159,7 @@ public class CustomerController {
 	    		throw new PolicyNotFoundException();
 		 }	
 		customerService.buyPolicy(policyDetailsDto);
-	    return new ResponseEntity<>("policy bought",HttpStatus.OK) ;
+	    return new ResponseEntity<>(policyDetailsDto,HttpStatus.OK) ;
 	}
 	
 	@DeleteMapping("/removePolicyDetails")

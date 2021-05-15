@@ -16,7 +16,7 @@ public class Policy {
 	@GeneratedValue(strategy = GenerationType.IDENTITY)
 	private int policyId;
 	
-	@OneToMany(mappedBy = "policy")
+	@OneToMany(mappedBy = "policy",cascade = CascadeType.ALL)
 	private List<PolicyDetails> policiesDetails;
 	
 	

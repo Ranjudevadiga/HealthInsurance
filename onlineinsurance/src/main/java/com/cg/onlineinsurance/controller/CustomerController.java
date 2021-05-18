@@ -87,14 +87,14 @@ public class CustomerController {
 		/*if(!customerRepository.existsById(customerDetailsDTO.getCustomerId()))
 		{
 			throw new CustomerNotFoundException();
-		}
+		}*/
 		for(CustomerDetails customerDetail: customerDetailsRepository.findAll())
 		{
 			if(customerDetail.getCustomer().getCustomerId()==customerDetailsDTO.getCustomerId())
 			{
 				throw new DuplicateCustomerDetailException();
 			}
-		}*/
+		}
 		customerService.addCustomerDetails(customerDetailsDTO);
 		return new ResponseEntity<>("Successfully added customer details", HttpStatus.OK);
 	}
